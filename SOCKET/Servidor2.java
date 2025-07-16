@@ -42,27 +42,43 @@ class MarcoServidor extends JFrame implements Runnable {
 	
 	private	JTextArea areatexto;
 
-	public void run() {
+	public void run() { 
 		try {
 
 			// ASI SE CREA EL SERVIDOR: CON LA CLASE SERVERSOCKET
 			ServerSocket servidor=new ServerSocket(9999); // Y LO PUSIMOS A LA ESCUCHA Y QUE ABRA EL PUERTO 9999
-			Socket elsocket=servidor.accept(); //QUE ACEPTE LAS CONECCIONES
+
+			String nick, ip, mensaje;
+
+			PaqueteEnvio paquete_recibido;
+			while(true){
 			
-			//ESTO ES PARA CREAR UN FLUJO DE DATOS DE ENTRADA
-			//PARA QUE SEA CAPAZ DE CAPTURAR LO QUE VIAJA DEL OTRO FLUJO DE DATOS (LA LINEA DE ABAJO)
-			DataInputStream flujo_entrada=new DataInputStream(elsocket.getInputStream());
-
-			//PARA PODER LEER LO QUE VIENE PONEMOS:
-			String mensaje_texto=flujo_entrada.readUTF();
-
-			//¿COMO HACEMOS PARA DECIRLE QUE LO ESCRIBA/AGREGUE EN EL JTEXTAREA? A LO QUE RECIBIMOS EN mensaje_texto
-			areatexto.append("\n" + mensaje_texto); //LE AGREGUE UN SALTO DE LÍNEA
+			   Socket elsocket=servidor.accept(); //QUE ACEPTE LAS CONECCIONES
 			
-			elsocket.close(); // cerramos la coneccion
+			   ObjectInputStream dato_entrada=new ObjectInputStream(elsocket.getInputStream()); 
+			   paquete_recibido=(PaqueteEnvio) dato_entrada.readObject();
+
+			   nick=paquete_recibido.getElnick();
+			   ip=paquete_recibido.getNum_ip();
+			   mensaje=paquete_recibido.getMensaje();
 
 
-		} catch (IOException e) {
+			   //ESTO ES PARA CREAR UN FLUJO DE DATOS DE ENTRADA
+			   //PARA QUE SEA CAPAZ DE CAPTURAR LO QUE VIAJA DEL OTRO FLUJO DE DATOS (LA LINEA DE ABAJO)
+			   //DataInputStream flujo_entrada=new DataInputStream(elsocket.getInputStream());
+
+			   //PARA PODER LEER LO QUE VIENE PONEMOS:
+			   //String mensaje_texto=flujo_entrada.readUTF();
+
+			   //¿COMO HACEMOS PARA DECIRLE QUE LO ESCRIBA/AGREGUE EN EL JTEXTAREA? A LO QUE RECIBIMOS EN mensaje_texto
+			  // areatexto.append("\n" + mensaje_texto); //LE AGREGUE UN SALTO DE LÍNEA
+
+			  areatexto.append("\n" + nick + ": " + mensaje + " para " + ip);
+			
+			   elsocket.close(); // cerramos la coneccion
+             }
+
+		} catch (IOException | ClassNotFoundException e) {
 	
 			e.printStackTrace();
 		}
