@@ -63,7 +63,7 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 		EnviaTexto mi_evento=new EnviaTexto();
 		miboton.addActionListener(mi_evento);
 		add(miboton);	
-		
+
 		//PARA QUE EL HILO YA ESTÉ EN EJECUCION EN SEGUNDO PLANO: 
 		Thread hilo=new Thread(this);
 		hilo.start();
@@ -74,6 +74,7 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 		
 		public void actionPerformed(ActionEvent e) {
 		
+			areachat.append("\n" + campo1.getText()); //ESTO ES PARA VER QUE MENSAJES ENVIO 
 			//System.out.println(campo1.getText()); CON ESTO ME ESCRIBE EN CONSOLA LO QUE ESCRIBI EN EL CAMPO DE TEXTO
 			//CREAMOS EL SOCKET ASI: 
 			try {
@@ -119,7 +120,7 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 				ObjectInputStream flujoentrada=new ObjectInputStream(cliente.getInputStream());
 				parqueteRecibido=(PaqueteEnvio) flujoentrada.readObject(); //EN ESTA VARIABLE NOS LLEGA DE PARTE DEL SERVIDOR
 
-				areachat.append("\n" + parqueteRecibido.getElnick() + " : " + parqueteRecibido.getMensaje() + ". Este mensaje es para " + parqueteRecibido.getNum_ip() + " ip" );
+				areachat.append("\n" + parqueteRecibido.getElnick() + " : " + parqueteRecibido.getMensaje());
 
 			}
 

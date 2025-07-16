@@ -78,6 +78,7 @@ class MarcoServidor extends JFrame implements Runnable {
 			  Socket enviaDestinatario=new Socket(ip,9090);
 			  ObjectOutputStream paqueteReenvio=new ObjectOutputStream(enviaDestinatario.getOutputStream());
 			  paqueteReenvio.writeObject(paquete_recibido);
+			  paqueteReenvio.close();
 			  enviaDestinatario.close();
 			
 			   elsocket.close(); // cerramos la coneccion
