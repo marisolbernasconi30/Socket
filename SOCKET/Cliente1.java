@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.*;
@@ -39,7 +40,7 @@ class MarcoCliente extends JFrame{
 	
 }
 
-class LaminaMarcoCliente extends JPanel{
+class LaminaMarcoCliente extends JPanel implements Runnable {
 	
 	public LaminaMarcoCliente(){
 
@@ -63,6 +64,9 @@ class LaminaMarcoCliente extends JPanel{
 		miboton.addActionListener(mi_evento);
 		add(miboton);	
 		
+		//PARA QUE EL HILO YA ESTÉ EN EJECUCION EN SEGUNDO PLANO: 
+		Thread hilo=new Thread(this);
+		hilo.start();
 	}
 
 	private class EnviaTexto implements ActionListener{
@@ -102,6 +106,27 @@ class LaminaMarcoCliente extends JPanel{
 	private JTextArea areachat;
 	
 	private JButton miboton;
+
+
+	public void run() {
+		try {
+			ServerSocket servidorcliente=new ServerSocket(9090);
+			Socket cliente;
+			PaqueteEnvio parqueteRecibido;
+
+			while(true){
+				cliente=servidorcliente.accept();
+				ObjectInputStream flujoentrada=new ObjectInputStream(cliente.getInputStream());
+				parqueteRecibido=(PaqueteEnvio) flujoentrada.readObject(); //EN ESTA VARIABLE NOS LLEGA DE PARTE DEL SERVIDOR
+
+				areachat.append("\n" + parqueteRecibido.getElnick() + " : " + parqueteRecibido.getMensaje() + ". Este mensaje es para " + parqueteRecibido.getNum_ip() + " ip" );
+
+			}
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	
 }
 
