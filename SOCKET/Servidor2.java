@@ -57,13 +57,7 @@ class MarcoServidor extends JFrame implements Runnable {
 			
 			   Socket elsocket=servidor.accept(); //QUE ACEPTE LAS CONECCIONES
 
-	//-------DETECTA ONLINE-------------------------
-
-	           InetAddress localizacion=elsocket.getInetAddress();
-			   String IpRemota=localizacion.getHostAddress(); //ACA TENGO ALMACENADA LA DIRECCION IP DEL CLIENTE 
-			   System.out.println("Online " + IpRemota);
-
-	//----------------------------------------------
+	
 			
 			   ObjectInputStream dato_entrada=new ObjectInputStream(elsocket.getInputStream()); 
 			   paquete_recibido=(PaqueteEnvio) dato_entrada.readObject();
@@ -83,6 +77,10 @@ class MarcoServidor extends JFrame implements Runnable {
 			   //¿COMO HACEMOS PARA DECIRLE QUE LO ESCRIBA/AGREGUE EN EL JTEXTAREA? A LO QUE RECIBIMOS EN mensaje_texto
 			  // areatexto.append("\n" + mensaje_texto); //LE AGREGUE UN SALTO DE LÍNEA
 
+			  if(!mensaje.equals(" online")){
+				
+			  
+
 			  areatexto.append("\n" + nick + ": " + mensaje + " para " + ip);
 
 			  Socket enviaDestinatario=new Socket(ip,9090);
@@ -90,9 +88,20 @@ class MarcoServidor extends JFrame implements Runnable {
 			  paqueteReenvio.writeObject(paquete_recibido);
 			  paqueteReenvio.close();
 			  enviaDestinatario.close();
-			
-			   elsocket.close(); // cerramos la coneccion
-             }
+              elsocket.close(); // cerramos la coneccion
+
+			} else {
+				//-------DETECTA ONLINE-------------------------
+
+	           InetAddress localizacion=elsocket.getInetAddress();
+			   String IpRemota=localizacion.getHostAddress(); //ACA TENGO ALMACENADA LA DIRECCION IP DEL CLIENTE 
+			   System.out.println("Online " + IpRemota);
+
+	             //----------------------------------------------
+			 }
+ }
+
+
 
 		} catch (IOException | ClassNotFoundException e) {
 	
