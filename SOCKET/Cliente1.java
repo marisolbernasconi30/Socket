@@ -2,6 +2,8 @@ package SOCKET;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,9 +38,30 @@ class MarcoCliente extends JFrame{
 		add(milamina);
 		
 		setVisible(true);
+
+		addWindowListener(new EnvioOnline()); 
 		}	
 	
 }
+
+//-------------------CLASE DE ENVIO DE SEÑAL ONLINE-----------------------------
+class EnvioOnline extends WindowAdapter{
+
+	public void windowOpened(WindowEvent e){
+
+		try {
+			Socket socket=new Socket("192.168.0.194", 9999);
+			PaqueteEnvio datos=new PaqueteEnvio();
+			datos.setMensaje(" online");
+			ObjectOutputStream paquete_datos=new ObjectOutputStream(socket.getOutputStream());
+			paquete_datos.writeObject(datos);
+			socket.close();
+		} catch (Exception e2) {
+			
+		}
+	}
+}
+
 
 class LaminaMarcoCliente extends JPanel implements Runnable {
 	

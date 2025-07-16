@@ -17,6 +17,8 @@ public class Servidor2  {
 	}	
 }
 
+
+
 class MarcoServidor extends JFrame implements Runnable {
 	
 	public MarcoServidor(){
@@ -54,6 +56,14 @@ class MarcoServidor extends JFrame implements Runnable {
 			while(true){
 			
 			   Socket elsocket=servidor.accept(); //QUE ACEPTE LAS CONECCIONES
+
+	//-------DETECTA ONLINE-------------------------
+
+	           InetAddress localizacion=elsocket.getInetAddress();
+			   String IpRemota=localizacion.getHostAddress(); //ACA TENGO ALMACENADA LA DIRECCION IP DEL CLIENTE 
+			   System.out.println("Online " + IpRemota);
+
+	//----------------------------------------------
 			
 			   ObjectInputStream dato_entrada=new ObjectInputStream(elsocket.getInputStream()); 
 			   paquete_recibido=(PaqueteEnvio) dato_entrada.readObject();
