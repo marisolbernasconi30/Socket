@@ -74,6 +74,11 @@ class MarcoServidor extends JFrame implements Runnable {
 			  // areatexto.append("\n" + mensaje_texto); //LE AGREGUE UN SALTO DE LÍNEA
 
 			  areatexto.append("\n" + nick + ": " + mensaje + " para " + ip);
+
+			  Socket enviaDestinatario=new Socket(ip,9090);
+			  ObjectOutputStream paqueteReenvio=new ObjectOutputStream(enviaDestinatario.getOutputStream());
+			  paqueteReenvio.writeObject(paquete_recibido);
+			  enviaDestinatario.close();
 			
 			   elsocket.close(); // cerramos la coneccion
              }
