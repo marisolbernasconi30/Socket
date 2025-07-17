@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 
@@ -169,6 +171,16 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 class PaqueteEnvio implements Serializable{ //LA SERIALIZAMOS PARA QUE SE CONVIERTA EN BYTES Y ENVIARLA X LA RED
 
 	private String elnick, num_ip, mensaje;
+	private ArrayList<String> Ips;
+	
+
+	public ArrayList<String> getIps() {
+		return Ips;
+	}
+
+	public void setIps(ArrayList<String> ips) {
+		Ips = ips;
+	}
 
 	public String getElnick() {
 		return elnick;

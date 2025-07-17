@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
 import java.io.*;
 public class Servidor2  {
 
@@ -52,7 +53,11 @@ class MarcoServidor extends JFrame implements Runnable {
 
 			String nick, ip, mensaje;
 
+			ArrayList<String> listaIp=new ArrayList<String>();
+
 			PaqueteEnvio paquete_recibido;
+
+		
 			while(true){
 			
 			   Socket elsocket=servidor.accept(); //QUE ACEPTE LAS CONECCIONES
@@ -91,14 +96,25 @@ class MarcoServidor extends JFrame implements Runnable {
               elsocket.close(); // cerramos la coneccion
 
 			} else {
-				//-------DETECTA ONLINE-------------------------
+				//-------DETECTA LA IP ONLINE-------------------------
 
 	           InetAddress localizacion=elsocket.getInetAddress();
 			   String IpRemota=localizacion.getHostAddress(); //ACA TENGO ALMACENADA LA DIRECCION IP DEL CLIENTE 
 			   System.out.println("Online " + IpRemota);
+			   listaIp.add(IpRemota); //RELLENAMOS EL ARRAYLIST
+			 
+			   paquete_recibido.setIps(listaIp); 
+
+
+			   for(String t: listaIp){
+
+				System.out.println("Array: " + t);
+			   }
 
 	             //----------------------------------------------
 			 }
+
+
  }
 
 
