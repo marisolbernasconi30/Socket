@@ -82,9 +82,9 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 		add(texto);
 
 		ip=new JComboBox();
-		ip.addItem("User 1");
-		ip.addItem("User 2");
-		ip.addItem("User 3");
+	//	ip.addItem("User 1");
+	//	ip.addItem("User 2");
+	//	ip.addItem("User 3");
 		add(ip);
 
 		areachat=new JTextArea(12,20);
@@ -150,15 +150,26 @@ class LaminaMarcoCliente extends JPanel implements Runnable {
 		try {
 			ServerSocket servidorcliente=new ServerSocket(9090);
 			Socket cliente;
-			PaqueteEnvio parqueteRecibido;
+			PaqueteEnvio paqueteRecibido;
 
 			while(true){
 				cliente=servidorcliente.accept();
 				ObjectInputStream flujoentrada=new ObjectInputStream(cliente.getInputStream());
-				parqueteRecibido=(PaqueteEnvio) flujoentrada.readObject(); //EN ESTA VARIABLE NOS LLEGA DE PARTE DEL SERVIDOR
+				paqueteRecibido=(PaqueteEnvio) flujoentrada.readObject(); //EN ESTA VARIABLE NOS LLEGA DE PARTE DEL SERVIDOR
 
-				areachat.append("\n" + parqueteRecibido.getElnick() + " : " + parqueteRecibido.getMensaje());
+				if(!paqueteRecibido.getMensaje().equals(" online")){
+                 areachat.append("\n" + paqueteRecibido.getElnick() + " : " + paqueteRecibido.getMensaje());
+				} else{
+				//areachat.append("\n" + paqueteRecibido.getIps()); //detecta las ip	
+				ArrayList<String>IpsMenu=new ArrayList<String>();
+				IpsMenu=paqueteRecibido.getIps(); 
+				ip.removeAllItems(); //borra las ip anteriores 
+				for (String z:IpsMenu){
+					ip.addItem(z);
+				}
 
+				}
+				
 			}
 
 		} catch (Exception e) {

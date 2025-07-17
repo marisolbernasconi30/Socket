@@ -83,17 +83,10 @@ class MarcoServidor extends JFrame implements Runnable {
 			  // areatexto.append("\n" + mensaje_texto); //LE AGREGUE UN SALTO DE LÍNEA
 
 			  if(!mensaje.equals(" online")){
-				
-			  
 
 			  areatexto.append("\n" + nick + ": " + mensaje + " para " + ip);
 
-			  Socket enviaDestinatario=new Socket(ip,9090);
-			  ObjectOutputStream paqueteReenvio=new ObjectOutputStream(enviaDestinatario.getOutputStream());
-			  paqueteReenvio.writeObject(paquete_recibido);
-			  paqueteReenvio.close();
-			  enviaDestinatario.close();
-              elsocket.close(); // cerramos la coneccion
+			  
 
 			} else {
 				//-------DETECTA LA IP ONLINE-------------------------
@@ -109,6 +102,15 @@ class MarcoServidor extends JFrame implements Runnable {
 			   for(String t: listaIp){
 
 				System.out.println("Array: " + t);
+
+
+				Socket enviaDestinatario=new Socket(t,9090);
+			    ObjectOutputStream paqueteReenvio=new ObjectOutputStream(enviaDestinatario.getOutputStream());
+			    paqueteReenvio.writeObject(paquete_recibido);
+			    paqueteReenvio.close();
+			    enviaDestinatario.close();
+                elsocket.close(); // cerramos la coneccion
+
 			   }
 
 	             //----------------------------------------------
